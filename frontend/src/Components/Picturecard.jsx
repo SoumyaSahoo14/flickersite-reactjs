@@ -1,4 +1,4 @@
-
+import "../CSS/Picturecard.css"
 
 function Picturecard({picture}){
 

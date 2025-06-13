@@ -1,3 +1,4 @@
+import "../CSS/Favorites.css"
 function Favorites(){
     return<div className="favorites-empty">
         <h2>No Favorite Pictures Yet</h2>

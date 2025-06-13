@@ -1,5 +1,6 @@
 import PictureCard from "../Components/Picturecard"
 import { useState } from "react";
+import "../CSS/Home.css"
 function Home() {
     const [searchQuery, setSearchQuery]= useState("");
 
