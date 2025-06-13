@@ -67,11 +67,13 @@ function Home() {
                 <div className="loading">Loading..</div>
             ):(    
               <div className="pictures-grid">
-                {pictures.map(
-                 (picture) => 
-                   picture.title.toLowerCase().startsWith(searchQuery)&&(
+                {pictures.length > 0 ?(
+                   pictures.map((picture) => (
+                   
                     <PictureCard picture={picture} key={picture.id} />
-                   )
+                   ))
+                ) : (
+                    <div>No pictures found..</div>
                 )}
             </div>
             )}
