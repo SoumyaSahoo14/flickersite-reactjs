@@ -7,7 +7,7 @@ function Picturecard({picture}){
     }
     return<div className="picture-card">
         <div className="picture-poster">
-            <img src={picture.url}alt ={picture.title}/>
+            <img src={`https://image.tmdb.org/t/p/w500${picture.poster_path}`}alt ={picture.title}/>
             <div className="picture-overlay">
                 <button className="favorite-btn" onClick={onFavoriteclick}>❤️</button>
 
@@ -16,7 +16,7 @@ function Picturecard({picture}){
         </div>
         <div className="picture-info">
             <h3>{picture.title}</h3>
-            <p>{picture.release_date}</p>
+            <p>{picture.release_date?.split("-")[0]}</p>
         </div>
 
     </div>

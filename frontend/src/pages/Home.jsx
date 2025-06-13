@@ -1,18 +1,51 @@
 import PictureCard from "../Components/Picturecard"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {searchPictures, getPopularPictures} from "../services/api";
 import "../CSS/Home.css"
 function Home() {
     const [searchQuery, setSearchQuery]= useState("");
 
-    const pictures = [
-        { id: 1, title: "Fast & Furious", release_date: "2022" },
-        { id: 2, title: "Terminator", release_date: "2022" },
-        { id: 3, title: "John wick", release_date: "2022" },
-    ];
-    const handleSearch =(e)=>{
-        e.preventDefault()
-        alert(searchQuery)
-        setSearchQuery("")
+    const [pictures, setPictures] = useState([]);
+    const [error, setError]= useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        const loadPopularPictures = async()=>{
+            try{
+                const popularPictures = await getPopularPictures()
+                setPictures(popularPictures)
+            } catch(err){
+                console.log(err);
+                
+                setError("failed to load pictures..")
+            }
+            finally{}
+            setLoading(false)
+        }
+        loadPopularPictures()
+    },[])
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        if (!searchQuery.trim()) return
+        if (loading) return
+
+        setLoading(true)
+        try {
+            const searchResults = await searchPictures(searchQuery)
+            setPictures(searchResults)
+            setError(null)
+
+        } catch (err) {
+            console.log(err);
+
+            setError("failed to search pictures..")
+
+        } finally {
+            setLoading(false)
+        }
+
+      
 
     };
 
@@ -27,7 +60,13 @@ function Home() {
                 />
                 <button type="submit" className="search-button">Search</button>
             </form>
-            <div className="pictures-grid">
+
+            {error && <div className="error-message">{error}</div>}
+
+            {loading? (
+                <div className="loading">Loading..</div>
+            ):(    
+              <div className="pictures-grid">
                 {pictures.map(
                  (picture) => 
                    picture.title.toLowerCase().startsWith(searchQuery)&&(
@@ -35,7 +74,7 @@ function Home() {
                    )
                 )}
             </div>
-
+            )}
         </div>
     );
 }
